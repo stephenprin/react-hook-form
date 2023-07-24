@@ -1,18 +1,26 @@
 import { useForm } from 'react-hook-form'
 import {DevTool} from "@hookform/devtools"
 
-export const RegisterForm = () => {
-  const form = useForm()
-  const { register, control } = form;
-  // const {name, ref, onChange, onBlur}= register("username") optional
+type IFormValues = {
+  username: string;
+  email: string;
+  channel: string
+}
 
+export const RegisterForm = () => {
+  const form = useForm<IFormValues>()
+  const { register, control, handleSubmit } = form;
+  // const {name, ref, onChange, onBlur}= register("username") optional
+  const onSubmit = (data:IFormValues) => { 
+    console.log("form submit", data)
+  }
 
   return (
 
     <div>
       <h1>YouTube Form</h1>
 
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="username">Username</label>
         <input type="text" id="username" {...register("username")} />
 

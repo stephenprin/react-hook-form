@@ -8,12 +8,13 @@
 
 
 
-/* .error {
+ .error {
   color: red;
-  font-size: 12px;
+  font-size: 13px;
   text-align: left;
+font-weight: bold;
 }
 
 .form-control {
   margin-bottom: 20px;
-} */
+} 

@@ -43,6 +43,14 @@ export const RegisterForm = () => {
                   /^[a-zA-Z0-9.!#$%&'*＋/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
                 message: "Invalid email format",
               },
+              validate: {
+                notAdmin:(fieldValues) => {
+                  return fieldValues !== "admin@example.com" || "Enter a valid email address"
+                },
+                notBlackListed: (fieldValues) => {
+                  return !fieldValues.endsWith("baddomain.com") || "This domain is not supported"
+                }
+              }
             })}
           />
           <p className="error">{errors.email?.message}</p>

@@ -35,7 +35,8 @@ export const RegisterForm = () => {
       dob: new Date(),
      
 
-    }
+    },
+    mode:"onSubmit"
   });
   const { register, control, handleSubmit,
     formState, getValues , setValue, watch, reset} = form;
@@ -100,7 +101,12 @@ const handleGetValue = () => {
                 },
                 notBlackListed: (fieldValues) => {
                   return !fieldValues.endsWith("baddomain.com") || "This domain is not supported"
-                }
+                },
+                emailAvailable:async (fieldValues) => {
+                  const response = await fetch(`https://jsonplaceholder.typicode.com/users?email=${fieldValues}`)
+                  const data = await response.json()
+                   return data.length == 0 ||"Email already exists"
+                 }
               }
             })}
           />

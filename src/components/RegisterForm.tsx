@@ -1,5 +1,6 @@
 import { useForm, useFieldArray } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
+import { useEffect } from "react";
 
 
 type IFormValues = {
@@ -36,18 +37,37 @@ export const RegisterForm = () => {
 
     }
   });
-  const { register, control, handleSubmit, formState } = form;
-  const { errors } = formState;
+  const { register, control, handleSubmit,
+    formState, getValues , setValue, watch, reset} = form;
+  const { errors, touchedFields, dirtyFields, isDirty, isValid, isSubmitting, isSubmitSuccessful } = formState;
+  
   const { fields, append,remove}=useFieldArray({
     name: 'phNumbers',
     control
   })
 
+
+  useEffect(() => { 
+    if (isSubmitSuccessful) {
+      reset()
+    }
+  },[isSubmitSuccessful,reset])
   // const {name, ref, onChange, onBlur}= register("username") optional
   const onSubmit = (data: IFormValues) => {
     console.log("form submit", data);
   };
+const handleGetValue = () => { 
+    console.log("get value", getValues("email") );
+}
+  
+  const handleSetValue = () => {
+    setValue("username", "", {
+      shouldValidate: true,
+      shouldDirty: true,
 
+      shouldTouch: true
+     })
+  }
   return (
     <div>
       <h1>YouTube Form</h1>
@@ -102,6 +122,7 @@ export const RegisterForm = () => {
             type="text"
             id="twitter"
             {...register("social.twitter", {
+              disabled: watch("username")==="",
               required: "Kindly enter twitter account"
             })}
           />
@@ -181,7 +202,10 @@ export const RegisterForm = () => {
           />
           <p className="error">{errors.dob?.message}</p>
         </div>
-        <button>Submit</button>
+        <button disabled={!isDirty || !isValid || isSubmitting}>Submit</button>
+        <button onClick={()=>reset()}>Rest</button>
+        <button type="button" onClick={handleGetValue}>Get value</button>
+        <button type="button" onClick={handleSetValue}>Set  value</button>
       </form>
       <DevTool control={control} />
     </div>
